@@ -2,4 +2,4 @@
 
 Notikha is a Notes app that attempts to look/work like Google Keep, separating Notes by users.
 
-By Andrés Hernández, Ana Fabiola Quintero.
+By Andrés Hernández ([aurozx](https://github.com/auroszx)]), Ana Fabiola Quintero ([fabiolaq95](https://github.com/fabiolaq95)]).
