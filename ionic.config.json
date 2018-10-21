@@ -1,13 +1,7 @@
 {
-  "name": "ionic-template",
+  "name": "ionic-template-angular",
   "integrations": {
     "cordova": {}
   },
-  "type": "ionic1",
-  "watchPatterns": [
-    "scss/**/*",
-    "www/**/*",
-    "!www/lib/**/*",
-    "!www/**/*.map"
-  ]
+  "type": "ionic-angular"
 }
