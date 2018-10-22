@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Notikha
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  Welcome to Notikha! Please login or create an account.
+
+  	<ion-list>
+  		<ion-item>
+    		<ion-label color="primary">Username</ion-label>
+    		<ion-input placeholder="Username" type="text" [(ngModel)]="username"></ion-input>
+  		</ion-item>
+      <ion-item *ngIf="signup">
+        <ion-label color="primary">Full name</ion-label>
+        <ion-input placeholder="E.g.: John Doe" type="text" [(ngModel)]="fullname"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="signup">
+        <ion-label color="primary">Email</ion-label>
+        <ion-input placeholder="E.g.: john.doe@example.com" type="text" [(ngModel)]="email"></ion-input>
+      </ion-item>
+  		<ion-item>
+			<ion-label color="primary">Password</ion-label>
+    		<ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+  		</ion-item>
+  	</ion-list>
+
+  <button ion-button color="primary" (click)="doLogin()" *ngIf="!signup">
+    Login
+  </button>
+
+  <button ion-button color="primary" (click)="doSignup()" *ngIf="signup">
+    Signup
+  </button>
+
+  <a (click)="toggleView()" id="signuplink" *ngIf="!signup">I don't have an account</a>
+  <a (click)="toggleView()" id="loginlink" *ngIf="signup">I have an account</a>
+</ion-content>

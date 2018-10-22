@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /*
@@ -10,15 +10,45 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UserProvider {
 
-  // constructor(public http: HttpClient) {
-  //   console.log('Hello UserProvider Provider');
-  // }
-  constructor() {
-    console.log('Hello UserProvider Provider');
+  constructor(public http: HttpClient) {
+    //Initialization?
   }
 
-  //Do stuff
-  doStuff() {
-  	return "Stuff done.";
+  login(username, password) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        //Authorization: token,
+        'Content-Type':'application/json'
+      })
+    };
+
+    let data = {
+        username: username,
+        password: password
+    };
+
+    return this.http.post('http://localhost:3000/user/login', JSON.stringify(data), httpOptions);
   }
+
+  signup(username, fullname, email,password) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        //Authorization: token,
+        'Content-Type':'application/json'
+      })
+    };
+
+    let data = {
+        username: username,
+        fullname: fullname,
+        email: email,
+        password: password
+    };
+
+    return this.http.post('http://localhost:3000/user/create', JSON.stringify(data), httpOptions);
+  }
+
+
 }
