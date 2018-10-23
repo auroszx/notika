@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 import { ToastController } from 'ionic-angular';
+import { NoteList } from '../notelist/notelist';
 
 @Component({
   selector: 'welcome',
@@ -22,7 +23,7 @@ export class WelcomePage {
   	//Check if user was previously logged in.
   	if (localStorage.getItem("token")) {
   		console.log("Already logged in.");
-      this.loggedIn = true;
+      this.navCtrl.setRoot(NoteList);
   	}
   	else {
   		console.log("Not logged in yet.");
@@ -31,11 +32,11 @@ export class WelcomePage {
   }
 
   doToast(message) {
-    let toast = this.toastCtrl.create({
-          message: message,
-          duration: 3000,
-          position: 'bottom'
-        });
+    this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
+    });
   }
 
   doLogin() {
@@ -45,6 +46,9 @@ export class WelcomePage {
       localStorage.setItem("token", this.response.token);
       if (this.response.status >= 400) {
         this.doToast(this.response.message);
+      }
+      if (this.response.status == 200) {
+        this.navCtrl.setRoot(NoteList);
       }
     });
 

@@ -6,13 +6,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { WelcomePage } from '../pages/welcome/welcome';
+import { NoteList }  from '../pages/notelist/notelist';
 import { UserProvider } from '../providers/user/user';
 import { HttpClientModule } from '@angular/common/http'; 
 
 @NgModule({
   declarations: [
     MyApp,
-    WelcomePage
+    WelcomePage,
+    NoteList
   ],
   imports: [
     BrowserModule,
@@ -22,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    WelcomePage
+    WelcomePage,
+    NoteList
   ],
   providers: [
     StatusBar,
