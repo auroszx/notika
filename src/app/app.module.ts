@@ -7,14 +7,17 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { NoteList }  from '../pages/notelist/notelist';
+import { NoteDetail } from '../pages/notedetail/notedetail'; 
 import { UserProvider } from '../providers/user/user';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
+import { NotesProvider } from '../providers/notes/notes'; 
 
 @NgModule({
   declarations: [
     MyApp,
     WelcomePage,
-    NoteList
+    NoteList,
+    NoteDetail
   ],
   imports: [
     BrowserModule,
@@ -25,13 +28,15 @@ import { HttpClientModule } from '@angular/common/http';
   entryComponents: [
     MyApp,
     WelcomePage,
-    NoteList
+    NoteList,
+    NoteDetail
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserProvider
+    UserProvider,
+    NotesProvider
   ]
 })
 export class AppModule {}
