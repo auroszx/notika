@@ -20,7 +20,7 @@
       </ion-item>
       <ion-item *ngIf="signup">
         <ion-label color="primary">Email</ion-label>
-        <ion-input placeholder="E.g.: john.doe@example.com" type="text" [(ngModel)]="email"></ion-input>
+        <ion-input placeholder="E.g.: john.doe@example.com" type="email" [(ngModel)]="email"></ion-input>
       </ion-item>
   		<ion-item>
 			<ion-label color="primary">Password</ion-label>
@@ -38,4 +38,6 @@
 
   <a (click)="toggleView()" id="signuplink" *ngIf="!signup">I don't have an account</a>
   <a (click)="toggleView()" id="loginlink" *ngIf="signup">I have an account</a>
+
+  <ion-input placeholder="Endpoint URL" type="text" [(ngModel)]="endpoint" (change)="setEndpoint()" style="position: absolute; bottom: 0;"></ion-input>
 </ion-content>

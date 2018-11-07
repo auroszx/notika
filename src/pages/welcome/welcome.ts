@@ -17,6 +17,7 @@ export class WelcomePage {
   password: String;
   response: any;
   signup: Boolean = false;
+  endpoint: string = localStorage.getItem("endpoint");
 
   constructor(public navCtrl: NavController, public user: UserProvider, private toastCtrl: ToastController) {
 
@@ -62,13 +63,17 @@ export class WelcomePage {
         this.doToast(this.response.message);
       }
       else {
-        alert("All good");
+        // alert("All good");
       }
     });
   }
 
   toggleView() {
     this.signup = !this.signup;
+  }
+
+  setEndpoint() {
+    localStorage.setItem("endpoint", this.endpoint);
   }
 
 

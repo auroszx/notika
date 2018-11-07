@@ -16,8 +16,8 @@
         <ion-icon name="trash"></ion-icon>
       </button>
       <button ion-button icon-only (click)="editNote()" *ngIf="editing">
-	    <ion-icon name="checkmark"></ion-icon>
-	  </button>
+  	    <ion-icon name="checkmark"></ion-icon>
+  	  </button>
 
     </ion-buttons>
 
@@ -27,7 +27,7 @@
 
 
 <ion-content padding>
-  <p *ngIf="!editing">note_content</p>
+  <p *ngIf="!editing">{{note_content}}</p>
 
   
   <ion-input placeholder="Note title (required)" type="text" [(ngModel)]="note_title" *ngIf="editing"></ion-input>

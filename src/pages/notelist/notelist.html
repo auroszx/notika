@@ -3,11 +3,32 @@
     <ion-title>
       My Notes
     </ion-title>
+    <ion-buttons end>
+	    <button ion-button icon-only (click)="getNotes()">
+	    	<ion-icon name="refresh"></ion-icon>
+	    </button>
+	    <button ion-button icon-only (click)="createNote()">
+	    	<ion-icon name="add"></ion-icon>
+	    </button>
+	    <button ion-button icon-only (click)="logout()">
+	    	<ion-icon name="arrow-back"></ion-icon>
+	    </button>
+	</ion-buttons>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content padding>
-  There should be notes here.
-
+  <ion-list *ngFor="let note of notelist">
+  		<ion-item (click)="editNote(note.note_id)">
+    		<p><strong>{{note.note_title}}</strong></p>
+    		<p>{{note.note_content}}</p>
+  		</ion-item>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="deleteNote(note.note_id)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-buttons>
+  	</ion-list>
   
 </ion-content>

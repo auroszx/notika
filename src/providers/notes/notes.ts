@@ -25,7 +25,7 @@ export class NotesProvider {
 	      })
 	    };
 
-	    return this.http.get('http://localhost:3000/notes/'+note_id, httpOptions);
+	    return this.http.get(localStorage.getItem("endpoint")+'/notes/'+note_id, httpOptions);
 	}
 
 	updateNote(note_id, note_title, note_content) {
@@ -43,7 +43,7 @@ export class NotesProvider {
 	        note_content: note_content
 	    };
 
-	    return this.http.put('http://localhost:3000/notes/update', JSON.stringify(data), httpOptions);
+	    return this.http.put(localStorage.getItem("endpoint")+'/notes/update', JSON.stringify(data), httpOptions);
 	}
 
 	deleteNote(note_id) {
@@ -55,7 +55,7 @@ export class NotesProvider {
 	      })
 	    };
 
-	    return this.http.delete('http://localhost:3000/notes/delete/'+note_id, httpOptions);
+	    return this.http.delete(localStorage.getItem("endpoint")+'/notes/delete/'+note_id, httpOptions);
 	}
 
 	createNote(note_title, note_content) {
@@ -72,7 +72,20 @@ export class NotesProvider {
 	        note_content: note_content
 	    };
 
-	    return this.http.post('http://localhost:3000/notes/create', JSON.stringify(data), httpOptions);
+	    return this.http.post(localStorage.getItem("endpoint")+'/notes/create', JSON.stringify(data), httpOptions);
+	}
+
+	getAllNotes() {
+
+		const httpOptions = {
+	      headers: new HttpHeaders({
+	        'Authorization': this.token,
+	        'Content-Type':'application/json'
+	      })
+	    };
+
+	    return this.http.get(localStorage.getItem("endpoint")+'/notes/user', httpOptions);
+
 	}
 
 }

@@ -18,8 +18,8 @@ export class NoteDetail {
   constructor(public navCtrl: NavController, private toastCtrl: ToastController, private notes: NotesProvider, private navParams: NavParams) {
     this.notes.getNoteDetail(this.navParams.get('note_id')).subscribe(res => {
       this.response = res;
-      this.note_title = this.response.note_title;
-      this.note_content = this.response.note_content;
+      this.note_title = this.response[0].note_title;
+      this.note_content = this.response[0].note_content;
     });
   }
 

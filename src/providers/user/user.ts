@@ -28,7 +28,7 @@ export class UserProvider {
         password: password
     };
 
-    return this.http.post('http://localhost:3000/user/login', JSON.stringify(data), httpOptions);
+    return this.http.post(localStorage.getItem("endpoint")+'/user/login', JSON.stringify(data), httpOptions);
   }
 
   signup(username, fullname, email,password) {
@@ -47,7 +47,7 @@ export class UserProvider {
         password: password
     };
 
-    return this.http.post('http://localhost:3000/user/create', JSON.stringify(data), httpOptions);
+    return this.http.post(localStorage.getItem("endpoint")+'/user/create', JSON.stringify(data), httpOptions);
   }
 
 

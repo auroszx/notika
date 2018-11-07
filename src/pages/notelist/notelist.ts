@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { UserProvider } from '../../providers/user/user';
 import { ToastController } from 'ionic-angular';
+import { NoteCreation } from '../notecreation/notecreation';
+import { NoteDetail } from '../notedetail/notedetail';
+import { WelcomePage } from '../welcome/welcome';
+import { NotesProvider } from '../../providers/notes/notes';
 
 @Component({
   selector: 'notelist',
@@ -9,8 +12,14 @@ import { ToastController } from 'ionic-angular';
 })
 export class NoteList {
 
-  constructor(public navCtrl: NavController, private toastCtrl: ToastController) {
-    
+  notelist: any;
+  response: any;
+
+  constructor(public navCtrl: NavController, private notes: NotesProvider, private toastCtrl: ToastController) {
+    this.notes.getAllNotes().subscribe(res => {
+      this.response = res;
+      this.notelist = this.response;
+    });
   }
 
   doToast(message) {
@@ -21,7 +30,36 @@ export class NoteList {
     });
   }
 
-  
+  ionViewWillEnter(){
+    this.getNotes();
+  }
+
+
+  createNote() {
+    this.navCtrl.push(NoteCreation);
+  }
+
+  editNote(note_id) {
+    this.navCtrl.push(NoteDetail, { note_id: note_id });
+  }
+
+  logout() {
+    localStorage.removeItem("token");
+    this.navCtrl.setRoot(WelcomePage)
+  }
+
+  getNotes() {
+    this.notes.getAllNotes().subscribe(res => {
+      this.response = res;
+      this.notelist = this.response;
+    });
+  }
+
+  deleteNote(note_id) {
+    this.notes.deleteNote(note_id).subscribe(res => {
+      this.getNotes();
+    });
+  }
 
 
 }
