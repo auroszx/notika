@@ -58,4 +58,21 @@ export class NotesProvider {
 	    return this.http.delete('http://localhost:3000/notes/delete/'+note_id, httpOptions);
 	}
 
+	createNote(note_title, note_content) {
+
+	    const httpOptions = {
+	      headers: new HttpHeaders({
+	        'Authorization': this.token,
+	        'Content-Type':'application/json'
+	      })
+	    };
+
+	    let data = {
+	        note_title: note_title,
+	        note_content: note_content
+	    };
+
+	    return this.http.post('http://localhost:3000/notes/create', JSON.stringify(data), httpOptions);
+	}
+
 }

@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { NoteList }  from '../pages/notelist/notelist';
 import { NoteDetail } from '../pages/notedetail/notedetail'; 
+import { NoteCreation } from '../pages/notecreation/notecreation';
 import { UserProvider } from '../providers/user/user';
 import { HttpClientModule } from '@angular/common/http';
 import { NotesProvider } from '../providers/notes/notes'; 
@@ -17,7 +18,8 @@ import { NotesProvider } from '../providers/notes/notes';
     MyApp,
     WelcomePage,
     NoteList,
-    NoteDetail
+    NoteDetail,
+    NoteCreation
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { NotesProvider } from '../providers/notes/notes';
     MyApp,
     WelcomePage,
     NoteList,
-    NoteDetail
+    NoteDetail,
+    NoteCreation
   ],
   providers: [
     StatusBar,

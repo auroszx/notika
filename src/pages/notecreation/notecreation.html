@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      New note
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="saveNote()">
+	    <ion-icon name="checkmark"></ion-icon>
+	  </button>
+
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding>
+  
+  <ion-input placeholder="Note title (required)" type="text" [(ngModel)]="note_title"></ion-input>
+
+  <ion-textarea placeholder="Your note content goes here" [(ngModel)]="note_content"></ion-textarea>
+
+</ion-content>
