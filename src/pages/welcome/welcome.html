@@ -39,5 +39,7 @@
   <a (click)="toggleView()" id="signuplink" *ngIf="!signup">I don't have an account</a>
   <a (click)="toggleView()" id="loginlink" *ngIf="signup">I have an account</a>
 
-  <ion-input placeholder="Endpoint URL" type="text" [(ngModel)]="endpoint" (change)="setEndpoint()" style="position: absolute; bottom: 0;"></ion-input>
+  <!-- Not required anymore, endpoint URL is assumed to be the same as Ionic Serve URL -->
+  
+  <!-- <ion-input placeholder="Endpoint URL" type="text" [(ngModel)]="endpoint" (change)="setEndpoint()" style="position: absolute; bottom: 0;"></ion-input> -->
 </ion-content>

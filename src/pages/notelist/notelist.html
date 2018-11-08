@@ -20,15 +20,16 @@
 
 <ion-content padding>
   <ion-list *ngFor="let note of notelist">
-  		<ion-item (click)="editNote(note.note_id)">
-    		<p><strong>{{note.note_title}}</strong></p>
-    		<p>{{note.note_content}}</p>
-  		</ion-item>
-      <ion-buttons end>
-        <button ion-button icon-only (click)="deleteNote(note.note_id)">
-          <ion-icon name="trash"></ion-icon>
-        </button>
-      </ion-buttons>
-  	</ion-list>
+		<ion-item (click)="editNote(note.note_id)" *ngIf="notelist?.length > 0">
+  		<p><strong>{{note.note_title}}</strong></p>
+  		<p>{{note.note_content}}</p>
+		</ion-item>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteNote(note.note_id)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-list>
+  <h4 *ngIf="notelist?.length == 0" text-center>You don't have any notes yet.</h4>
   
 </ion-content>

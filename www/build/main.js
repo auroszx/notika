@@ -70,7 +70,7 @@ var WelcomePage = /** @class */ (function () {
                 _this.doToast(_this.response.message);
             }
             else {
-                // alert("All good");
+                _this.doLogin();
             }
         });
     };
@@ -82,7 +82,7 @@ var WelcomePage = /** @class */ (function () {
     };
     WelcomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'welcome',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/welcome/welcome.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Notikha\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  Welcome to Notikha! Please login or create an account.\n\n  	<ion-list>\n  		<ion-item>\n    		<ion-label color="primary">Username</ion-label>\n    		<ion-input placeholder="Username" type="text" [(ngModel)]="username"></ion-input>\n  		</ion-item>\n      <ion-item *ngIf="signup">\n        <ion-label color="primary">Full name</ion-label>\n        <ion-input placeholder="E.g.: John Doe" type="text" [(ngModel)]="fullname"></ion-input>\n      </ion-item>\n      <ion-item *ngIf="signup">\n        <ion-label color="primary">Email</ion-label>\n        <ion-input placeholder="E.g.: john.doe@example.com" type="email" [(ngModel)]="email"></ion-input>\n      </ion-item>\n  		<ion-item>\n			<ion-label color="primary">Password</ion-label>\n    		<ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>\n  		</ion-item>\n  	</ion-list>\n\n  <button ion-button color="primary" (click)="doLogin()" *ngIf="!signup">\n    Login\n  </button>\n\n  <button ion-button color="primary" (click)="doSignup()" *ngIf="signup">\n    Signup\n  </button>\n\n  <a (click)="toggleView()" id="signuplink" *ngIf="!signup">I don\'t have an account</a>\n  <a (click)="toggleView()" id="loginlink" *ngIf="signup">I have an account</a>\n\n  <ion-input placeholder="Endpoint URL" type="text" [(ngModel)]="endpoint" (change)="setEndpoint()" style="position: absolute; bottom: 0;"></ion-input>\n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/welcome/welcome.html"*/
+            selector: 'welcome',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/welcome/welcome.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Notikha\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  Welcome to Notikha! Please login or create an account.\n\n  	<ion-list>\n  		<ion-item>\n    		<ion-label color="primary">Username</ion-label>\n    		<ion-input placeholder="Username" type="text" [(ngModel)]="username"></ion-input>\n  		</ion-item>\n      <ion-item *ngIf="signup">\n        <ion-label color="primary">Full name</ion-label>\n        <ion-input placeholder="E.g.: John Doe" type="text" [(ngModel)]="fullname"></ion-input>\n      </ion-item>\n      <ion-item *ngIf="signup">\n        <ion-label color="primary">Email</ion-label>\n        <ion-input placeholder="E.g.: john.doe@example.com" type="email" [(ngModel)]="email"></ion-input>\n      </ion-item>\n  		<ion-item>\n			<ion-label color="primary">Password</ion-label>\n    		<ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>\n  		</ion-item>\n  	</ion-list>\n\n  <button ion-button color="primary" (click)="doLogin()" *ngIf="!signup">\n    Login\n  </button>\n\n  <button ion-button color="primary" (click)="doSignup()" *ngIf="signup">\n    Signup\n  </button>\n\n  <a (click)="toggleView()" id="signuplink" *ngIf="!signup">I don\'t have an account</a>\n  <a (click)="toggleView()" id="loginlink" *ngIf="signup">I have an account</a>\n\n  <!-- Not required anymore, endpoint URL is assumed to be the same as Ionic Serve URL -->\n  \n  <!-- <ion-input placeholder="Endpoint URL" type="text" [(ngModel)]="endpoint" (change)="setEndpoint()" style="position: absolute; bottom: 0;"></ion-input> -->\n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/welcome/welcome.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_user_user__["a" /* UserProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]])
     ], WelcomePage);
@@ -154,7 +154,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var UserProvider = /** @class */ (function () {
     function UserProvider(http) {
         this.http = http;
-        //Initialization?
+        this.endpointUrl = 'http://' + window.location.hostname + ':3000';
+        console.log(this.endpointUrl);
     }
     UserProvider.prototype.login = function (username, password) {
         var httpOptions = {
@@ -167,7 +168,7 @@ var UserProvider = /** @class */ (function () {
             username: username,
             password: password
         };
-        return this.http.post(localStorage.getItem("endpoint") + '/user/login', JSON.stringify(data), httpOptions);
+        return this.http.post(this.endpointUrl + '/user/login', JSON.stringify(data), httpOptions);
     };
     UserProvider.prototype.signup = function (username, fullname, email, password) {
         var httpOptions = {
@@ -182,13 +183,14 @@ var UserProvider = /** @class */ (function () {
             email: email,
             password: password
         };
-        return this.http.post(localStorage.getItem("endpoint") + '/user/create', JSON.stringify(data), httpOptions);
+        return this.http.post(this.endpointUrl + '/user/create', JSON.stringify(data), httpOptions);
     };
     UserProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
     ], UserProvider);
     return UserProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=user.js.map
@@ -268,12 +270,11 @@ var NoteList = /** @class */ (function () {
     };
     NoteList = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'notelist',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      My Notes\n    </ion-title>\n    <ion-buttons end>\n	    <button ion-button icon-only (click)="getNotes()">\n	    	<ion-icon name="refresh"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="createNote()">\n	    	<ion-icon name="add"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="logout()">\n	    	<ion-icon name="arrow-back"></ion-icon>\n	    </button>\n	</ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n  <ion-list *ngFor="let note of notelist">\n  		<ion-item (click)="editNote(note.note_id)">\n    		<p><strong>{{note.note_title}}</strong></p>\n    		<p>{{note.note_content}}</p>\n  		</ion-item>\n      <ion-buttons end>\n        <button ion-button icon-only (click)="deleteNote(note.note_id)">\n          <ion-icon name="trash"></ion-icon>\n        </button>\n      </ion-buttons>\n  	</ion-list>\n  \n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/
+            selector: 'notelist',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      My Notes\n    </ion-title>\n    <ion-buttons end>\n	    <button ion-button icon-only (click)="getNotes()">\n	    	<ion-icon name="refresh"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="createNote()">\n	    	<ion-icon name="add"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="logout()">\n	    	<ion-icon name="arrow-back"></ion-icon>\n	    </button>\n	</ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n  <ion-list *ngFor="let note of notelist">\n		<ion-item (click)="editNote(note.note_id)" *ngIf="notelist?.length > 0">\n  		<p><strong>{{note.note_title}}</strong></p>\n  		<p>{{note.note_content}}</p>\n		</ion-item>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="deleteNote(note.note_id)">\n        <ion-icon name="trash"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-list>\n  <h4 *ngIf="notelist?.length == 0" text-center>You don\'t have any notes yet.</h4>\n  \n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__["a" /* NotesProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__["a" /* NotesProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__["a" /* NotesProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]])
     ], NoteList);
     return NoteList;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=notelist.js.map
@@ -574,21 +575,24 @@ var NotesProvider = /** @class */ (function () {
     function NotesProvider(http) {
         this.http = http;
         this.token = undefined;
-        this.token = localStorage.getItem("token");
+        this.endpointUrl = 'http://' + window.location.hostname + ':3000';
+        console.log(this.endpointUrl);
     }
     NotesProvider.prototype.getNoteDetail = function (note_id) {
         var httpOptions = {
             headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({
-                'Authorization': this.token,
+                //'Authorization': this.token,
+                'Authorization': localStorage.getItem("token"),
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.get(localStorage.getItem("endpoint") + '/notes/' + note_id, httpOptions);
+        return this.http.get(this.endpointUrl + '/notes/' + note_id, httpOptions);
     };
     NotesProvider.prototype.updateNote = function (note_id, note_title, note_content) {
         var httpOptions = {
             headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({
-                'Authorization': this.token,
+                // 'Authorization': this.token,
+                'Authorization': localStorage.getItem("token"),
                 'Content-Type': 'application/json'
             })
         };
@@ -597,21 +601,23 @@ var NotesProvider = /** @class */ (function () {
             note_title: note_title,
             note_content: note_content
         };
-        return this.http.put(localStorage.getItem("endpoint") + '/notes/update', JSON.stringify(data), httpOptions);
+        return this.http.put(this.endpointUrl + '/notes/update', JSON.stringify(data), httpOptions);
     };
     NotesProvider.prototype.deleteNote = function (note_id) {
         var httpOptions = {
             headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({
-                'Authorization': this.token,
+                // 'Authorization': this.token,
+                'Authorization': localStorage.getItem("token"),
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.delete(localStorage.getItem("endpoint") + '/notes/delete/' + note_id, httpOptions);
+        return this.http.delete(this.endpointUrl + '/notes/delete/' + note_id, httpOptions);
     };
     NotesProvider.prototype.createNote = function (note_title, note_content) {
         var httpOptions = {
             headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({
-                'Authorization': this.token,
+                // 'Authorization': this.token,
+                'Authorization': localStorage.getItem("token"),
                 'Content-Type': 'application/json'
             })
         };
@@ -619,22 +625,24 @@ var NotesProvider = /** @class */ (function () {
             note_title: note_title,
             note_content: note_content
         };
-        return this.http.post(localStorage.getItem("endpoint") + '/notes/create', JSON.stringify(data), httpOptions);
+        return this.http.post(this.endpointUrl + '/notes/create', JSON.stringify(data), httpOptions);
     };
     NotesProvider.prototype.getAllNotes = function () {
         var httpOptions = {
             headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({
-                'Authorization': this.token,
+                // 'Authorization': this.token,
+                'Authorization': localStorage.getItem("token"),
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.get(localStorage.getItem("endpoint") + '/notes/user', httpOptions);
+        return this.http.get(this.endpointUrl + '/notes/user', httpOptions);
     };
     NotesProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
     ], NotesProvider);
     return NotesProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=notes.js.map

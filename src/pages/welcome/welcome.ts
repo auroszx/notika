@@ -20,7 +20,6 @@ export class WelcomePage {
   endpoint: string = localStorage.getItem("endpoint");
 
   constructor(public navCtrl: NavController, public user: UserProvider, private toastCtrl: ToastController) {
-
   	//Check if user was previously logged in.
   	if (localStorage.getItem("token")) {
   		console.log("Already logged in.");
@@ -63,7 +62,7 @@ export class WelcomePage {
         this.doToast(this.response.message);
       }
       else {
-        // alert("All good");
+        this.doLogin();
       }
     });
   }

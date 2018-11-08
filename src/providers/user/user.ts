@@ -10,8 +10,11 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UserProvider {
 
+  private endpointUrl: string;
+
   constructor(public http: HttpClient) {
-    //Initialization?
+    this.endpointUrl = 'http://'+ window.location.hostname + ':3000';
+    console.log(this.endpointUrl);
   }
 
   login(username, password) {
@@ -28,7 +31,7 @@ export class UserProvider {
         password: password
     };
 
-    return this.http.post(localStorage.getItem("endpoint")+'/user/login', JSON.stringify(data), httpOptions);
+    return this.http.post(this.endpointUrl+'/user/login', JSON.stringify(data), httpOptions);
   }
 
   signup(username, fullname, email,password) {
@@ -47,7 +50,7 @@ export class UserProvider {
         password: password
     };
 
-    return this.http.post(localStorage.getItem("endpoint")+'/user/create', JSON.stringify(data), httpOptions);
+    return this.http.post(this.endpointUrl+'/user/create', JSON.stringify(data), httpOptions);
   }
 
 
