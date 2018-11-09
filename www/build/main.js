@@ -41,11 +41,12 @@ var WelcomePage = /** @class */ (function () {
         }
     }
     WelcomePage.prototype.doToast = function (message) {
-        this.toastCtrl.create({
+        var toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
             position: 'bottom'
         });
+        toast.present();
     };
     WelcomePage.prototype.doLogin = function () {
         var _this = this;
@@ -84,9 +85,10 @@ var WelcomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'welcome',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/welcome/welcome.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Notikha\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  Welcome to Notikha! Please login or create an account.\n\n  	<ion-list>\n  		<ion-item>\n    		<ion-label color="primary">Username</ion-label>\n    		<ion-input placeholder="Username" type="text" [(ngModel)]="username"></ion-input>\n  		</ion-item>\n      <ion-item *ngIf="signup">\n        <ion-label color="primary">Full name</ion-label>\n        <ion-input placeholder="E.g.: John Doe" type="text" [(ngModel)]="fullname"></ion-input>\n      </ion-item>\n      <ion-item *ngIf="signup">\n        <ion-label color="primary">Email</ion-label>\n        <ion-input placeholder="E.g.: john.doe@example.com" type="email" [(ngModel)]="email"></ion-input>\n      </ion-item>\n  		<ion-item>\n			<ion-label color="primary">Password</ion-label>\n    		<ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>\n  		</ion-item>\n  	</ion-list>\n\n  <button ion-button color="primary" (click)="doLogin()" *ngIf="!signup">\n    Login\n  </button>\n\n  <button ion-button color="primary" (click)="doSignup()" *ngIf="signup">\n    Signup\n  </button>\n\n  <a (click)="toggleView()" id="signuplink" *ngIf="!signup">I don\'t have an account</a>\n  <a (click)="toggleView()" id="loginlink" *ngIf="signup">I have an account</a>\n\n  <!-- Not required anymore, endpoint URL is assumed to be the same as Ionic Serve URL -->\n  \n  <!-- <ion-input placeholder="Endpoint URL" type="text" [(ngModel)]="endpoint" (change)="setEndpoint()" style="position: absolute; bottom: 0;"></ion-input> -->\n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/welcome/welcome.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_user_user__["a" /* UserProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_user_user__["a" /* UserProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_user_user__["a" /* UserProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]) === "function" && _c || Object])
     ], WelcomePage);
     return WelcomePage;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=welcome.js.map
@@ -185,6 +187,15 @@ var UserProvider = /** @class */ (function () {
         };
         return this.http.post(this.endpointUrl + '/user/create', JSON.stringify(data), httpOptions);
     };
+    UserProvider.prototype.getUserData = function () {
+        var httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({
+                'Authorization': localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.get(this.endpointUrl + '/user', httpOptions);
+    };
     UserProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
@@ -208,6 +219,7 @@ var UserProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__notedetail_notedetail__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__welcome_welcome__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_user__ = __webpack_require__(199);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -224,23 +236,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var NoteList = /** @class */ (function () {
-    function NoteList(navCtrl, notes, toastCtrl) {
+    function NoteList(navCtrl, notes, toastCtrl, user) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.notes = notes;
         this.toastCtrl = toastCtrl;
-        this.notes.getAllNotes().subscribe(function (res) {
+        this.user = user;
+        this.user.getUserData().subscribe(function (res) {
             _this.response = res;
-            _this.notelist = _this.response;
+            _this.fullname = _this.response[0].user_fullname;
+            _this.notes.getAllNotes().subscribe(function (res) {
+                _this.response = res;
+                _this.notelist = _this.response;
+            });
         });
     }
     NoteList.prototype.doToast = function (message) {
-        this.toastCtrl.create({
+        var toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
             position: 'bottom'
         });
+        toast.present();
     };
     NoteList.prototype.ionViewWillEnter = function () {
         this.getNotes();
@@ -270,11 +289,12 @@ var NoteList = /** @class */ (function () {
     };
     NoteList = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'notelist',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      My Notes\n    </ion-title>\n    <ion-buttons end>\n	    <button ion-button icon-only (click)="getNotes()">\n	    	<ion-icon name="refresh"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="createNote()">\n	    	<ion-icon name="add"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="logout()">\n	    	<ion-icon name="arrow-back"></ion-icon>\n	    </button>\n	</ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n  <ion-list *ngFor="let note of notelist">\n		<ion-item (click)="editNote(note.note_id)" *ngIf="notelist?.length > 0">\n  		<p><strong>{{note.note_title}}</strong></p>\n  		<p>{{note.note_content}}</p>\n		</ion-item>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="deleteNote(note.note_id)">\n        <ion-icon name="trash"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-list>\n  <h4 *ngIf="notelist?.length == 0" text-center>You don\'t have any notes yet.</h4>\n  \n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/
+            selector: 'notelist',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title *ngIf="fullname">\n      {{fullname}}\'s Notes\n    </ion-title>\n    <ion-title *ngIf="!fullname">\n      My Notes\n    </ion-title>\n    <ion-buttons end>\n	    <button ion-button icon-only (click)="getNotes()">\n	    	<ion-icon name="refresh"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="createNote()">\n	    	<ion-icon name="add"></ion-icon>\n	    </button>\n	    <button ion-button icon-only (click)="logout()">\n	    	<ion-icon name="arrow-back"></ion-icon>\n	    </button>\n	</ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n  <ion-list *ngFor="let note of notelist">\n		<ion-item (click)="editNote(note.note_id)" *ngIf="notelist?.length > 0">\n  		<p><strong>{{note.note_title}}</strong></p>\n  		<p>{{note.note_content}}</p>\n		</ion-item>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="deleteNote(note.note_id)">\n        <ion-icon name="trash"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-list>\n  <h4 *ngIf="notelist?.length == 0" text-center>You don\'t have any notes yet.</h4>\n  \n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/notelist/notelist.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__["a" /* NotesProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__["a" /* NotesProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_notes_notes__["a" /* NotesProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__providers_user_user__["a" /* UserProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__providers_user_user__["a" /* UserProvider */]) === "function" && _d || Object])
     ], NoteList);
     return NoteList;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=notelist.js.map
@@ -308,13 +328,16 @@ var NoteCreation = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.toastCtrl = toastCtrl;
         this.notes = notes;
+        this.note_title = "";
+        this.note_content = "";
     }
     NoteCreation.prototype.doToast = function (message) {
-        this.toastCtrl.create({
+        var toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
             position: 'bottom'
         });
+        toast.present();
     };
     NoteCreation.prototype.createNote = function () {
         var _this = this;
@@ -326,9 +349,10 @@ var NoteCreation = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'notecreation',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/notecreation/notecreation.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      New note\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="createNote()">\n	    <ion-icon name="checkmark"></ion-icon>\n	  </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n</ion-header>\n\n\n\n<ion-content padding>\n  \n  <ion-input placeholder="Note title (required)" type="text" [(ngModel)]="note_title"></ion-input>\n\n  <ion-textarea placeholder="Your note content goes here" [(ngModel)]="note_content"></ion-textarea>\n\n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/notecreation/notecreation.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */], __WEBPACK_IMPORTED_MODULE_2__providers_notes_notes__["a" /* NotesProvider */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_notes_notes__["a" /* NotesProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_notes_notes__["a" /* NotesProvider */]) === "function" && _c || Object])
     ], NoteCreation);
     return NoteCreation;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=notecreation.js.map
@@ -372,11 +396,12 @@ var NoteDetail = /** @class */ (function () {
         });
     }
     NoteDetail.prototype.doToast = function (message) {
-        this.toastCtrl.create({
+        var toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
             position: 'bottom'
         });
+        toast.present();
     };
     NoteDetail.prototype.toggleEdit = function () {
         this.editing = !this.editing;
@@ -397,9 +422,10 @@ var NoteDetail = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'notedetail',template:/*ion-inline-start:"/home/andres/Escritorio/notikha/src/pages/notedetail/notedetail.html"*/'<ion-header>\n  <ion-navbar>\n\n    <ion-title *ngIf="!editing">\n      {{note_title}}\n    </ion-title>\n    <ion-title *ngIf="editing">\n      Edit note\n    </ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="toggleEdit()" *ngIf="!editing">\n        <ion-icon name="create"></ion-icon>\n      </button>\n      <button ion-button icon-only (click)="deleteNote()" *ngIf="!editing">\n        <ion-icon name="trash"></ion-icon>\n      </button>\n      <button ion-button icon-only (click)="editNote()" *ngIf="editing">\n  	    <ion-icon name="checkmark"></ion-icon>\n  	  </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n</ion-header>\n\n\n\n<ion-content padding>\n  <p *ngIf="!editing">{{note_content}}</p>\n\n  \n  <ion-input placeholder="Note title (required)" type="text" [(ngModel)]="note_title" *ngIf="editing"></ion-input>\n\n  <ion-textarea placeholder="Your note content goes here" [(ngModel)]="note_content" *ngIf="editing"></ion-textarea>\n\n</ion-content>\n'/*ion-inline-end:"/home/andres/Escritorio/notikha/src/pages/notedetail/notedetail.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */], __WEBPACK_IMPORTED_MODULE_2__providers_notes_notes__["a" /* NotesProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ToastController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_notes_notes__["a" /* NotesProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_notes_notes__["a" /* NotesProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavParams */]) === "function" && _d || Object])
     ], NoteDetail);
     return NoteDetail;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=notedetail.js.map
@@ -639,10 +665,9 @@ var NotesProvider = /** @class */ (function () {
     };
     NotesProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
     ], NotesProvider);
     return NotesProvider;
-    var _a;
 }());
 
 //# sourceMappingURL=notes.js.map

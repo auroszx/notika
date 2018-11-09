@@ -53,5 +53,17 @@ export class UserProvider {
     return this.http.post(this.endpointUrl+'/user/create', JSON.stringify(data), httpOptions);
   }
 
+  getUserData() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': localStorage.getItem("token"),
+        'Content-Type':'application/json'
+      })
+    };
+
+    return this.http.get(this.endpointUrl+'/user', httpOptions);
+  }
+
 
 }

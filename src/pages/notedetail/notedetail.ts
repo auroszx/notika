@@ -24,11 +24,13 @@ export class NoteDetail {
   }
 
   doToast(message) {
-    this.toastCtrl.create({
+    let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
       position: 'bottom'
     });
+
+    toast.present();
   }
 
   toggleEdit() {

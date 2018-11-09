@@ -1,6 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title *ngIf="fullname">
+      {{fullname}}'s Notes
+    </ion-title>
+    <ion-title *ngIf="!fullname">
       My Notes
     </ion-title>
     <ion-buttons end>

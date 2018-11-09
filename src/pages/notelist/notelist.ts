@@ -5,6 +5,7 @@ import { NoteCreation } from '../notecreation/notecreation';
 import { NoteDetail } from '../notedetail/notedetail';
 import { WelcomePage } from '../welcome/welcome';
 import { NotesProvider } from '../../providers/notes/notes';
+import { UserProvider } from '../../providers/user/user';
 
 @Component({
   selector: 'notelist',
@@ -14,20 +15,28 @@ export class NoteList {
 
   notelist: any;
   response: any;
+  fullname: string;
 
-  constructor(public navCtrl: NavController, private notes: NotesProvider, private toastCtrl: ToastController) {
-    this.notes.getAllNotes().subscribe(res => {
+  constructor(public navCtrl: NavController, private notes: NotesProvider, private toastCtrl: ToastController, private user: UserProvider) {
+    this.user.getUserData().subscribe(res => {
       this.response = res;
-      this.notelist = this.response;
+      this.fullname = this.response[0].user_fullname;
+
+      this.notes.getAllNotes().subscribe(res => {
+        this.response = res;
+        this.notelist = this.response;
+      });
     });
   }
 
   doToast(message) {
-    this.toastCtrl.create({
+    let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
       position: 'bottom'
     });
+
+    toast.present();
   }
 
   ionViewWillEnter(){
